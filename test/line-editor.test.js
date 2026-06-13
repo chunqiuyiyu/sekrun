@@ -10,6 +10,7 @@ import {
   findAtToken,
   getCompletions,
   highlight,
+  insertPrintableText,
   isPrintableInput,
   normalizeInputKey,
   promptLine,
@@ -68,6 +69,18 @@ test('isPrintableInput accepts Unicode IME chunks and rejects controls', () => {
   assert.equal(isPrintableInput('\x1b[C'), false);
   assert.equal(isPrintableInput('\r'), false);
   assert.equal(isPrintableInput('\x7f'), false);
+});
+
+test('insertPrintableText inserts multi-character chunks at the cursor', () => {
+  assert.deepEqual(insertPrintableText('ask  now', 4, 'about files'), {
+    input: 'ask about files now',
+    cursor: 15,
+  });
+  assert.deepEqual(insertPrintableText('ask  now', 4, Buffer.from('中文')), {
+    input: 'ask 中文 now',
+    cursor: 6,
+  });
+  assert.equal(insertPrintableText('ask', 3, '\r'), null);
 });
 
 test('completionReplacementEnd consumes an existing separator space', () => {
