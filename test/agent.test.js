@@ -34,8 +34,13 @@ test('Agent starts conversations with sek system prompt', () => {
 
 test('shouldContinueForPromisedToolUse detects scan promises without tools', () => {
   assert.equal(shouldContinueForPromisedToolUse('让我先扫描一下项目。'), true);
+  assert.equal(shouldContinueForPromisedToolUse('我先看一下相关代码和测试。'), true);
+  assert.equal(shouldContinueForPromisedToolUse('先理解一下仓库结构，然后再改。'), true);
+  assert.equal(shouldContinueForPromisedToolUse('以下是我的计划：先定位问题，再修改实现。'), true);
+  assert.equal(shouldContinueForPromisedToolUse('接下来我会修改实现并运行测试。'), true);
   assert.equal(shouldContinueForPromisedToolUse('I will inspect the repository first.'), true);
   assert.equal(shouldContinueForPromisedToolUse('可以，通过 readline 实现。'), false);
+  assert.equal(shouldContinueForPromisedToolUse('问题出在 line_editor 的 suggest 逻辑。'), false);
 });
 
 test('Agent continues when assistant promises tool use without calling tools', async () => {
