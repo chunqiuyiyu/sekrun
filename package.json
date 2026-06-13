@@ -1,7 +1,7 @@
 {
   "name": "sek",
   "version": "0.1.0",
-  "description": "A small DeepSeek-powered coding agent CLI rewritten in JavaScript.",
+  "description": "A small DeepSeek-powered coding agent CLI.",
   "type": "module",
   "bin": {
     "sek": "./bin/sek.js"
@@ -13,5 +13,5 @@
   "engines": {
     "node": ">=18"
   },
-  "license": "UNLICENSED"
+  "license": "MIT"
 }
