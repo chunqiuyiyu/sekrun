@@ -4,6 +4,8 @@
 
 It can read, write, search, and edit files, execute shell commands, and interact with the user across multiple turns, all driven by the DeepSeek function-calling API.
 
+![preview](preview.webp)
+
 ## Install
 
 ```bash
