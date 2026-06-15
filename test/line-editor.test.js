@@ -10,9 +10,11 @@ import {
   findAtToken,
   getCompletions,
   highlight,
+  insertPastedText,
   insertPrintableText,
   isPrintableInput,
   normalizeInputKey,
+  normalizePastedText,
   promptLine,
   Suggester,
   visiblePrefix,
@@ -81,6 +83,20 @@ test('insertPrintableText inserts multi-character chunks at the cursor', () => {
     cursor: 6,
   });
   assert.equal(insertPrintableText('ask', 3, '\r'), null);
+});
+
+test('normalizePastedText normalizes CRLF multi-line paste to LF', () => {
+  assert.equal(normalizePastedText('first\r\nsecond\rthird'), 'first\nsecond\nthird');
+  assert.equal(normalizePastedText('\r'), null);
+  assert.equal(normalizePastedText('single line'), null);
+  assert.equal(normalizePastedText('\x1b[A\r\ntext'), null);
+});
+
+test('insertPastedText inserts a multi-line paste as logical newlines', () => {
+  assert.deepEqual(insertPastedText('beforeafter', 6, 'one\r\ntwo\rthree'), {
+    input: 'beforeone\ntwo\nthreeafter',
+    cursor: 'beforeone\ntwo\nthree'.length,
+  });
 });
 
 test('completionReplacementEnd consumes an existing separator space', () => {
