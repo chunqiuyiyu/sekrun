@@ -41,3 +41,4 @@ coverage/
 # Temporary files
 _tmp.js
 _check.js
+tmp_*
