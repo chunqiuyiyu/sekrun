@@ -1,6 +1,6 @@
 {
   "name": "sekrun",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A DeepSeek-powered coding agent CLI.",
   "type": "module",
   "bin": {
