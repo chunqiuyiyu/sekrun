@@ -17,6 +17,8 @@ import {
   normalizePastedText,
   promptLine,
   Suggester,
+  visualCursorPosition,
+  visualLineCount,
   visiblePrefix,
   visibleWidth,
 } from '../lib/line_editor.js';
@@ -49,6 +51,19 @@ test('visiblePrefix clips text without exceeding display width', () => {
   assert.equal(visiblePrefix('中文abc', 4), '中文');
   assert.equal(visiblePrefix('中文abc', 5), '中文a');
   assert.equal(visiblePrefix('abc', 0), '');
+});
+
+test('visualCursorPosition accounts for prompt width when a single line wraps', () => {
+  // '12345678' (8) + prompt (2) = 10 = termWidth — cursor stays on row 0 at col=10 (wrapping margin)
+  assert.deepEqual(visualCursorPosition('12345678', 2, 10), { row: 0, col: 10 });
+  // '1234567' (7) + prompt (2) = 9 < termWidth — cursor on row 0 at col 9
+  assert.deepEqual(visualCursorPosition('1234567', 2, 10), { row: 0, col: 9 });
+});
+
+test('visualLineCount preserves explicit newlines and wrapped rows', () => {
+  // '12345' (5+2=7, fits 1 row) + \n + '1234567890' (10, fits 1 row) = 2 visual rows
+  assert.equal(visualLineCount('12345\n1234567890', 2, 10), 2);
+  assert.equal(visualLineCount('', 2, 10), 1);
 });
 
 test('highlight keeps unknown plain text visible', () => {
